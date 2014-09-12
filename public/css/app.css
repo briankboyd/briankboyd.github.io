@@ -1,0 +1,49 @@
+/* "Mobile" CSS mobile first
+======================================================================= */
+
+body {
+	display: block;
+	font-family: 'Roboto', sans-serif;
+	padding: 0;
+	margin: 0;
+	font-size: 10px;
+	height: 100%;
+	width: 100%;
+	max-width: 100%;
+}
+
+.BBHeadClass {
+	height: 4em;
+	width: inherit;
+	background-color: #262626;	
+}
+
+.BBSectLeftListClass {
+	font-size: 2em;
+}
+
+
+
+/* "Tablet" CSS
+======================================================================= */
+@media screen and (min-width: 600px) {
+	.BBHeadClass {
+		height: 8em;	
+	}
+	.BBSectLeftListClass {
+		font-size: 2em;
+	}
+}
+
+
+/* "Desktop" CSS
+======================================================================= */
+
+@media screen and (min-width: 900px) {
+	.BBHeadClass {
+		height: 8em;	
+	}
+	.BBSectLeftListClass {
+		font-size: 4em;
+	}
+}
