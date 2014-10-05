@@ -1,26 +1,25 @@
-(function () {
-	'use strict';
-	
 
-	function getRepos() {
-		var request = new XMLHttpRequest(),
-			url = 'https://api.github.com/users/briankboyd/repos';
-//		request.onload = function () {
-//			console.log(request.responseText);
-//		}
-		function getRepoText() {
-			request.onreadystatechange = function () {
-				if (request.readyState === 4) {
-					return request.responseText;
-				}
-			};
-		}
-		request.open('GET', url, false);
+var bb = bb || {};
+(function (bb) {
+  'use strict';
+
+	function bbGetRepo(url, callback) {
+		var request = new XMLHttpRequest();
+		request.open('GET', url, true);
+		request.onreadystatechange = function () {
+			if (request.readyState === 4 && request.status === 200) {
+				callback(JSON.parse(request.responseText));
+			}
+		};
 		request.send();
-		
-		return getRepoText;
+  }
+
+	function bbProcessRepo(data) {
+		var bbParsedGithubData = data,
+			bbSectLeftListId = document.getElementById('bbSectLeftListId'),
+			bbContent = document.createTextNode(bbParsedGithubData[0].full_name);
+		bbSectLeftListId.appendChild(bbContent);
 	}
 	
-	console.log(getRepos());
+	bbGetRepo('https://api.github.com/users/briankboyd/repos', bbProcessRepo);
 }());
-
