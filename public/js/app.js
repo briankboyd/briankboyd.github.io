@@ -1,25 +1,41 @@
 
-var bb = bb || {};
-(function (bb) {
+
+(function () {
   'use strict';
 
-	function bbGetRepo(url, callback) {
-		var request = new XMLHttpRequest();
-		request.open('GET', url, true);
-		request.onreadystatechange = function () {
-			if (request.readyState === 4 && request.status === 200) {
-				callback(JSON.parse(request.responseText));
-			}
-		};
-		request.send();
-  }
+	var bbProfile = function () {
+		var bbUrl,
+			bbCallback,
+			request,
+			bbParsedGithubData,
+			bbSectLeftListId,
+			bbContent,
+			bbGetRepo = function (url, callback) {
+				bbUrl = url;
+				bbCallback = callback;
+				request = new XMLHttpRequest();
+				request.open('GET', bbUrl, true);
+				request.onreadystatechange = function () {
+					if (request.readyState === 4 && request.status === 200) {
+						bbCallback(JSON.parse(request.responseText));
+					}
+				};
+				request.send();
+			},
 
-	function bbProcessRepo(data) {
-		var bbParsedGithubData = data,
-			bbSectLeftListId = document.getElementById('bbSectLeftListId'),
-			bbContent = document.createTextNode(bbParsedGithubData[0].full_name);
-		bbSectLeftListId.appendChild(bbContent);
-	}
+			bbProcessRepo = function (data) {
+				bbParsedGithubData = data;
+				bbSectLeftListId = document.getElementById('bbSectLeftListId');
+				bbContent = document.createTextNode(bbParsedGithubData[0].full_name);
+				bbSectLeftListId.appendChild(bbContent);
+			};
+		return {
+			bbGetRepo: bbGetRepo,
+			bbProcessRepo: bbProcessRepo
+		};
+	},
+
 	
-	bbGetRepo('https://api.github.com/users/briankboyd/repos', bbProcessRepo);
+		bbListRepo = bbProfile();
+	bbListRepo.bbGetRepo('https://api.github.com/users/briankboyd/repos', bbListRepo.bbProcessRepo);
 }());
