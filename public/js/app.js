@@ -2,40 +2,47 @@
 
 (function () {
   'use strict';
+  //namespace while using revealing module pattern
+  var bbProfile = function () {
+    var bbUrl,
+      bbCallback,
+      bbRequest,
+      bbParsedGithubData,
+      bbSectLeftListId,
+      bbContent,
+      bbFilteredGithubData,
+      bbGetRepo = function (url, callback) {
+        bbUrl = url;
+        bbCallback = callback;
+        bbRequest = new XMLHttpRequest();
+        bbRequest.open('GET', bbUrl, true);
+        bbRequest.onreadystatechange = function () {
+          if (bbRequest.readyState === 4 && bbRequest.status === 200) {
+            bbCallback(JSON.parse(bbRequest.responseText));
+          }
+        };
+        bbRequest.send();
+      },
 
-	var bbProfile = function () {
-		var bbUrl,
-			bbCallback,
-			request,
-			bbParsedGithubData,
-			bbSectLeftListId,
-			bbContent,
-			bbGetRepo = function (url, callback) {
-				bbUrl = url;
-				bbCallback = callback;
-				request = new XMLHttpRequest();
-				request.open('GET', bbUrl, true);
-				request.onreadystatechange = function () {
-					if (request.readyState === 4 && request.status === 200) {
-						bbCallback(JSON.parse(request.responseText));
-					}
-				};
-				request.send();
-			},
+      bbProcessRepo = function (data) {
+        bbParsedGithubData = data;
+        bbSectLeftListId = document.getElementById('bbSectLeftUlId');
+        bbFilteredGithubData  = bbParsedGithubData.filter(function (el) {
+          return el.fork === false;
+        });
+        bbFilteredGithubData.forEach(function (el) {
+          var node = document.createElement("li");
+          bbContent = document.createTextNode(el.full_name);
+          node.appendChild(bbContent);
+          bbSectLeftListId.appendChild(node);
+        });
+      };
+    return {
+      bbGetRepo: bbGetRepo,
+      bbProcessRepo: bbProcessRepo
+    };
+  },
 
-			bbProcessRepo = function (data) {
-				bbParsedGithubData = data;
-				bbSectLeftListId = document.getElementById('bbSectLeftListId');
-				bbContent = document.createTextNode(bbParsedGithubData[0].full_name);
-				bbSectLeftListId.appendChild(bbContent);
-			};
-		return {
-			bbGetRepo: bbGetRepo,
-			bbProcessRepo: bbProcessRepo
-		};
-	},
-
-	
-		bbListRepo = bbProfile();
-	bbListRepo.bbGetRepo('https://api.github.com/users/briankboyd/repos', bbListRepo.bbProcessRepo);
+    bbListRepo = bbProfile();
+  bbListRepo.bbGetRepo('https://api.github.com/users/briankboyd/repos', bbListRepo.bbProcessRepo);
 }());
