@@ -31,9 +31,11 @@
           return el.fork === false;
         });
         bbFilteredGithubData.forEach(function (el) {
-          var node = document.createElement("li");
-          bbContent = document.createTextNode(el.full_name);
-          node.appendChild(bbContent);
+          var node = document.createElement("li"),
+            link = document.createElement('a');
+          link.setAttribute('href', el.html_url);
+          link.appendChild(document.createTextNode(el.name));
+          node.appendChild(link);
           bbSectLeftListId.appendChild(node);
         });
       };
