@@ -46,5 +46,5 @@
   },
 
     bbListRepo = bbProfile();
-  bbListRepo.bbGetRepo('https://api.github.com/users/briankboyd/repos', bbListRepo.bbProcessRepo);
+  bbListRepo.bbGetRepo('https://api.github.com/users/zero8urn/repos', bbListRepo.bbProcessRepo);
 }());
